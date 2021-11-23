@@ -2,36 +2,100 @@ var vectors = [] //array de vetores
 var points = [] //array de pontos
 var currentVector; //vetor atual (o que muda com o mouse)
 var isDrawing = true; //diz se está "pausado" ou não
-var menu = new Menu()
+
+//menu
+var helpText = '[H] Ajuda'
+var addText = '[S] Somar '
+var clearText = '[C] Limpar tudo'
+var escapeText = '[ESC] - Parar de desenhar'
+var escapeText2 = '[ESC] - Voltar a desenhar'
+
+var helpButton, addButton, clearButton, backgroundColor, scpWidth;
+var buttons = [];
 
 //dimensoes canva
 var cnvWidth = 600
 var cnvHeight = 600
 
+function deleteElement(){
+    let pos = mousePosition()
+    
+    vectors.forEach( v =>{
+      if(v.isHover()){
+        vectors.splice(vectors.indexOf(v),1)
+        return;
+      }
+    })
+  
+    points.forEach(p =>{
+      if(p.isHover()){
+        points.splice(points.indexOf(p),1)
+        regenerateVectors()
+        return;
+      }
+    })
+}
+  
 function mousePosition(){
-  let x = mouseX
-  let y = mouseY
-  
-  if(x > cnvWidth){x = cnvWidth}
-  else if(x<0){x = 0}
-  
-  if(y > cnvHeight){ y = cnvHeight }
-  else if(y < 0){ y = 0}
-  
-  return [x, y]
+    let x = mouseX
+    let y = mouseY
+
+    if(x > cnvWidth){x = cnvWidth}
+    else if(x<0){x = 0}
+
+    if(y > cnvHeight){ y = cnvHeight }
+    else if(y < 0){ y = 0}
+
+    return [x, y]
 }
 
 function sum(){ //soma os vetores
-  
+
   let sumVector = new Vector(points[0], points[points.length-1], color(255,0,0))
-  
+
   vectors.push(sumVector)
   isDrawing = false;
-  
+
 }
+
+function regenerateVectors(){
+  vectors = []
+  for( i = 0 ; i < points.length-1 ; i++ ) { //desenha todos os vetores do array
+      vectors.push(new Vector(points[i], points[i+1]))
+  }
+}
+
+function clearAll(){
+  vectors = []
+  points = []
+}
+
+
+
+
+
+
+// ----------------------------------------------------
+
+
+
+
+
 
 function setup(){
   createCanvas(cnvWidth, cnvHeight);
+  backgroundColor = color(179,205,224)
+  helpButton = new Button(10, 10, color(100,151,177), helpText, "help");
+  addButton = new Button(100, 10, color(100,151,177), addText, "add");
+  clearButton = new Button(200, 10, color(100,151,177), clearText, "clear");
+
+  buttons.push(helpButton)
+  buttons.push(addButton)
+  buttons.push(clearButton)
+
+  scpWidth = textWidth(escapeText)
+  scpWidth2 = textWidth(escapeText2)
+
 }
 
 function mousePressed(){
@@ -41,11 +105,16 @@ function mousePressed(){
     if(points.length > 0 ){
       vectors.push(currentVector) //adiciona o vetor atual ao array de vetores
     }
-    points.push(new Point(mousePosition()))
+    points.push(new Point(mousePosition(), color(1,31,75)))
   }
-
-  if(mouseButton === "right"){
-
+  
+  else if(mouseButton === "left" && !(isDrawing)){
+    buttons.forEach(b=>{
+      if(b.isHover()){
+        b.onClick()
+      }
+      return
+    })
   }
   
 }
@@ -62,8 +131,7 @@ function keyPressed(){
       break
     
     case(67): //limpar
-      vectors = []
-      points=[]
+      clearAll()
       break
     
     case(69): //embaralharar
@@ -80,48 +148,41 @@ function keyPressed(){
   }
 }
 
-function deleteElement(){
-  let pos = mousePosition()
-  vectors.forEach( v =>{
-    if(v.isHover()){
-      vectors.splice(vectors.indexOf(v),1)
-      return;
-    }
-  })
-
-  points.forEach(p =>{
-    if(p.isHover()){
-      points.splice(points.indexOf(p),1)
-      regenerateVectors()
-      return;
-    }
-  })
-}
-
 function draw() {
-  background(240,248,255); //azul claro
+  background(backgroundColor);
+
+  stroke(255)
+  noFill()
+  strokeWeight(0.4)
+  textSize(13)
+  if(isDrawing){
+    text(escapeText, cnvWidth - scpWidth*13/12 - 5 , 50)
+
+    let currentPoint = new Point(mousePosition(), color(1,31,75))
+    currentPoint.draw()
+  }
+  else{
+    text(escapeText2, cnvWidth - scpWidth2*13/12 - 5 , 50)
+  }
   
-  vectors.forEach( v =>{
+  
+  vectors.forEach(v =>{
     v.draw()
   })
 
   points.forEach(p =>{
     p.draw()
   })
+
+  buttons.forEach(b=>{
+    b.draw()
+  })
   
   if(isDrawing && points.length > 0){
     currentVector = new Vector(
       points[points.length-1], 
-      new Point(mousePosition()))
+      new Point(mousePosition()), color(1,31,75))
+    currentVector.draw()
+  }
   
-    currentVector.draw(vectors.length == 0) //a expressao booleana indica se o vetor é o primeiro do array
-  }
-}
-
-
-function regenerateVectors(){
-  vectors = []
-  for( i = 0 ; i < points.length-1 ; i++ ) { //desenha todos os vetores do array
-    vectors.push(new Vector(points[i], points[i+1]))
-  }
 }

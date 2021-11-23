@@ -1,14 +1,15 @@
 class Point{
-    constructor(pos){
+    constructor(pos, color){
         this.pos = pos
         this.x = pos[0]
         this.y = pos[1]
         this.radius = 10
+        this.color = color
     }
 
     draw(){
-        fill(0)
-        stroke(0)
+        fill(this.color)
+        stroke(this.color)
         strokeWeight(0.5)
         textSize(15)
         
@@ -24,6 +25,9 @@ class Point{
         let x = mousePosition()[0]
         let y = mousePosition()[1]
         
-        return x > this.x-this.radius && x < this.x+this.radius && y > this.y-this.radius && y < this.y+this.radius
+        return (x > this.x - this.radius 
+            && x < this.x + this.radius 
+            && y > this.y - this.radius 
+            && y < this.y + this.radius)
     }
 }

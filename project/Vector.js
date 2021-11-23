@@ -27,13 +27,17 @@ class Vector{
   
   draw(){
     stroke(this.paint)
-    strokeWeight(this.weight)
+    
     
     if(this.isHover()){
+      textSize(15)
+      noFill()
+      strokeWeight(1)
       text("Módulo: "+ nf(this.value, undefined, 2), ((this.x2 - this.x1)/2)+this.x1, ((this.y2 - this.y1)/2)+this.y1)
-      stroke(255,165,0)      
+      stroke(255,165,0)
+  
     }
-    
+    strokeWeight(this.weight)
     line(this.x1, this.y1, this.x2, this.y2)    
   }
   
