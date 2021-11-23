@@ -1,6 +1,5 @@
 class Button{
     constructor(x,y, color,text, action, margin = 6, fontSize = 15){
-      
       this.x = x
       this.y = y
       
@@ -33,14 +32,17 @@ class Button{
     onClick(){
       switch(this.action){
         case "add":
-          sum()
-          break
+            sum()
+            break
         case "clear":
-          clearAll()
-          break
+            clearAll()
+            break
         case "help":
-          print("help")
-          break
+            print("help")
+            break
+        case "shuffle":
+            shufflePoints()
+            break
         default:
           this.action()
           break

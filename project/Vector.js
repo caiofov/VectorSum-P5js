@@ -44,7 +44,18 @@ class Vector{
   isHover(){
     let pos = mousePosition()
     let result = this.lineFunction(pos[0])
-    return  result < pos[1] + this.weight+2 && result > pos[1] - this.weight-2;
+    
+    let maxX = ( this.x1 > this.x2 ? this.x1 : this.x2 )
+    let minX = ( this.x1 > this.x2 ? this.x2 : this.x1 )
+    let maxY = ( this.y1 > this.y2 ? this.y1 : this.y2 )
+    let minY = ( this.y1 > this.y2 ? this.y2 : this.y1 )
+
+    return  (result < pos[1] + this.weight+2 
+      && result > pos[1] - this.weight - 2 
+      && pos[0] < maxX
+      && pos[1] < maxY
+      && pos[0] > minX
+      && pos[1] > minY)
   }
 
   lineFunction(x){

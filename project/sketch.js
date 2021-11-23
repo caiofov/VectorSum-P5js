@@ -4,13 +4,13 @@ var currentVector; //vetor atual (o que muda com o mouse)
 var isDrawing = true; //diz se está "pausado" ou não
 
 //menu
-var helpText = '[H] Ajuda'
 var addText = '[S] Somar '
 var clearText = '[C] Limpar tudo'
+var shuffleText = '[E] Embaralhar'
 var escapeText = '[ESC] - Parar de desenhar'
 var escapeText2 = '[ESC] - Voltar a desenhar'
 
-var helpButton, addButton, clearButton, backgroundColor, scpWidth;
+var addButton, clearButton, backgroundColor, scpWidth, shuffleButton;
 var buttons = [];
 
 //dimensoes canva
@@ -61,7 +61,7 @@ function sum(){ //soma os vetores
 function regenerateVectors(){
   vectors = []
   for( i = 0 ; i < points.length-1 ; i++ ) { //desenha todos os vetores do array
-      vectors.push(new Vector(points[i], points[i+1]))
+    vectors.push(new Vector(points[i], points[i+1]))
   }
 }
 
@@ -70,28 +70,28 @@ function clearAll(){
   points = []
 }
 
-
-
-
+function shufflePoints(){
+  points = shuffle(points)
+  regenerateVectors()
+}
 
 
 // ----------------------------------------------------
 
 
 
-
-
-
 function setup(){
   createCanvas(cnvWidth, cnvHeight);
+  
   backgroundColor = color(179,205,224)
-  helpButton = new Button(10, 10, color(100,151,177), helpText, "help");
-  addButton = new Button(100, 10, color(100,151,177), addText, "add");
-  clearButton = new Button(200, 10, color(100,151,177), clearText, "clear");
+  
+  addButton = new Button(10, 10, color(100,151,177), addText, "add");
+  clearButton = new Button(110, 10, color(100,151,177), clearText, "clear");
+  shuffleButton = new Button(240, 10, color(100,151,177), shuffleText, "shuffle");
 
-  buttons.push(helpButton)
   buttons.push(addButton)
   buttons.push(clearButton)
+  buttons.push(shuffleButton)
 
   scpWidth = textWidth(escapeText)
   scpWidth2 = textWidth(escapeText2)
@@ -109,7 +109,7 @@ function mousePressed(){
   }
   
   else if(mouseButton === "left" && !(isDrawing)){
-    buttons.forEach(b=>{
+    buttons.forEach( b=> {
       if(b.isHover()){
         b.onClick()
       }
@@ -135,8 +135,7 @@ function keyPressed(){
       break
     
     case(69): //embaralharar
-      points = shuffle(points)
-      regenerateVectors()
+      shufflePoints()
       break
     
     case(46): //apagar um elemento
@@ -151,20 +150,24 @@ function keyPressed(){
 function draw() {
   background(backgroundColor);
 
-  stroke(255)
+  stroke(1,31,75)
   noFill()
   strokeWeight(0.4)
   textSize(13)
+
+  t = "[DEL] - Remover elemento"
+  w = textWidth(t)
+  text(t, cnvWidth - w - 5, 40)
+
   if(isDrawing){
-    text(escapeText, cnvWidth - scpWidth*13/12 - 5 , 50)
+    text(escapeText, cnvWidth - scpWidth*13/12 - 5 , 17)
 
     let currentPoint = new Point(mousePosition(), color(1,31,75))
     currentPoint.draw()
   }
   else{
-    text(escapeText2, cnvWidth - scpWidth2*13/12 - 5 , 50)
+    text(escapeText2, cnvWidth - scpWidth2*13/12 - 5 , 17)
   }
-  
   
   vectors.forEach(v =>{
     v.draw()
