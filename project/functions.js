@@ -67,8 +67,6 @@ function regeneratePoints(){
   vectors.forEach(v =>{
     points.push(v.point2)
   })
-  
-  // points.pop()
 }
 
 function regenerateVectors(){
@@ -83,65 +81,98 @@ function clearAll(){
   points = []
 }
 
-function shuffleVectors(){
-    print(vectors)
-    let c = color(1,31,75)
+function shuffleVectors(){    
     vectors = shuffle(vectors)
-    let i = 0
+
+    updatePointSequence()
+    
+    centerPoints()
 
     while(i < vectors.length){
-        let firstPoint = vectors[0].point1
-        let p = vectors[i].point2
-        
-        if (p.x > cnvWidth){
-            let dif = p.x - cnvWidth
-            
-            firstPoint.setX(firstPoint.x - dif) //mover mais para a esquerda o primeiro ponto
-            vectors[0].setPoints(firstPoint)
-            i = 0
-            continue
-        }
-        else if(p.x < 0){
-            firstPoint.setX(firstPoint.x - p.x) //mover mais para a direita o primeiro ponto
-            vectors[0].setPoints(firstPoint)
-           
-            i = 0
-            continue
-        }
-
-        if(p.y > cnvHeight){
-            let dif = p.y - cnvHeight
-            
-            firstPoint.setY(firstPoint.y - dif) //mover mais para a cima o primeiro ponto
-            vectors[0].setPoints(firstPoint)
-            
-            i = 0
-            continue
-
-        }
-        else if (p.y < 0){
-            firstPoint.setY(firstPoint.y - p.y) //mover mais para a baixo o primeiro ponto
-            vectors[0].setPoints(firstPoint)
-            
-            i = 0
-            continue
-        }
-
-        if(i<vectors.length - 1){
-            vectors[i+1].setPoints(vectors[i].point2)
-        }
-        
-        i++
+      checkCanvasBounds(i)
+      i++
     }
 
   regeneratePoints()
 }
 
-function teste(){
-    vectors = [vectors[2], vectors[0], vectors[1]]
-
-    vectors[1].setPoints(vectors[0].point2)
-    vectors[2].setPoints(vectors[1].point2)
+function centerPoints(){
+    let arrX = [], arrY=[]
     
-    regeneratePoints()
+    points.forEach(p=>{
+        arrX.push(p.x)
+        arrY.push(p.y)
+    })
+
+    let difX = cnvWidth/2 - media(arrX)
+    let difY = cnvHeight/2 - media(arrY)
+    
+    
+    points.forEach(p=>{
+        p.setX(p.x + difX)
+    })
+    points.forEach(p=>{
+        p.setY(p.y + difY)
+    })
+    
+    
+    regenerateVectors()
+    
+}
+
+function media(arr){
+    let sum = 0
+    arr.forEach(a=>{
+        sum+=a
+    })
+
+    return sum/arr.length
+}
+
+function checkCanvasBounds(){
+  let i = 0
+  
+  while(i < vectors.length - 1){
+    let changed = false
+    let firstPoint = vectors[0].point1
+    let p = vectors[i].point2
+    
+    if (p.x > cnvWidth){
+      let dif = p.x - cnvWidth
+      firstPoint.setX(firstPoint.x - dif) //mover mais para a esquerda o primeiro ponto
+
+      changed = true
+      
+    }
+
+    else if(p.x < 0){
+      firstPoint.setX(firstPoint.x - p.x) //mover mais para a direita o primeiro ponto
+      changed = true
+    }
+
+    if(p.y > cnvHeight){
+      let dif = p.y - cnvHeight
+      
+      firstPoint.setY(firstPoint.y - dif) //mover mais para a cima o primeiro ponto
+      changed = true
+    }
+
+    else if (p.y < 0){
+      firstPoint.setY(firstPoint.y - p.y) //mover mais para a baixo o primeiro ponto
+      changed = true 
+    }
+    
+    if(changed){
+      updatePointSequence()
+      vectors[0].setPoints(firstPoint)
+    }
+    i++
+  }
+}
+  
+
+function updatePointSequence(){
+  for (let i = 0; i < vectors.length-1; i++) {
+    vectors[i+1].setPoints(vectors[i].point2)
+  }
 }

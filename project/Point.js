@@ -18,7 +18,7 @@ class Point{
         }
         
         circle(this.x,this.y,this.radius)
-        text("x: " + this.x + " y: " + this.y, this.x, this.y-this.radius)
+        text("x: " + nf(this.x,undefined, 2) + " y: " + nf(this.y, undefined, 2), this.x, this.y-this.radius)
     }
 
     isHover(){
