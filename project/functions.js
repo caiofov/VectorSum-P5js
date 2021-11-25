@@ -84,18 +84,67 @@ function clearAll(){
 }
 
 function shuffleVectors(){
-  vectors = shuffle(vectors)
-  let ready = false
-  let i = 0
+    vectors = shuffle(vectors)
+    let ready = false
+    let i = 0
 
-  while(!ready){
-    let p = vectors[i].point2
-    vectors[i+1].setPoints(p)
+    while(!ready){
+        let p = vectors[i].point2
+        
+        if (p.x > cnvWidth){
+            let dif = p.x - cnvWidth
+            let newPoint = vectors[0].point1
+            newPoint.setX(newPoint.x - dif) //mover mis para a esquerda o primeiro ponto
 
-    if(i == vectors.length){
-        ready = true
+            vectors[0].setPoints(newPoint)
+            i = 0
+            print("maior x")
+            continue
+        }
+        else if(p.x < 0){
+            let dif = 0 - p.x
+            let newPoint = vectors[0].point1
+            newPoint.setX(newPoint.x + dif) //mover mais para a direita o primeiro ponto
+
+            vectors[0].setPoints(newPoint)
+            i = 0
+            print("menor x")
+
+            continue
+        }
+
+        if(p.y > cnvHeight){
+            let dif = p.y - cnvHeight
+            let newPoint = vectors[0].point1
+            newPoint.setY(newPoint.x - dif) //mover mais para a cima o primeiro ponto
+
+            vectors[0].setPoints(newPoint)
+            i = 0
+            print("maior y")
+            continue
+
+        }
+        else if (p.y < 0){
+            let dif = 0 - p.y
+            let newPoint = vectors[0].point1
+            newPoint.setY(newPoint.x + dif) //mover mais para a baixo o primeiro ponto
+
+            vectors[0].setPoints(newPoint)
+            i = 0
+            print("menor y")
+
+
+            continue
+
+        }
+
+        vectors[i+1].setPoints(p)
+
+        i++
+        if(i == vectors.length - 1){
+            ready = true
+        }
     }
-  }
 
   regeneratePoints()
 }

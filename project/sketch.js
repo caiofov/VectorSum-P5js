@@ -30,7 +30,6 @@ function mousePressed(){
     }
     
     points.push(currentPoint)
-    print(currentPoint)
   }
   
   else if(mouseButton === "left" && !(isDrawing)){

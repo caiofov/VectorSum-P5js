@@ -69,7 +69,6 @@ class Vector{
     this.point1 = p1;
     this.x1 = this.point1.x
     this.t1 = this.point1.y
-    print("x1: " + this.x1 + "y1: " +this.y1)
     this.setPoint2()
   }
 
@@ -77,7 +76,6 @@ class Vector{
     this.x2 = this.x1 + this.dx
     this.y2 = this.y1 + this.dy
     this.point2 = new Point([this.x2,this.y2], color(1,31,75))
-    print("x2: " + this.x2 + "y2: " +this.y2)
   }
   
 }
