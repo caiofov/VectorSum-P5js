@@ -41,7 +41,7 @@ class Button{
             print("help")
             break
         case "shuffle":
-            shufflePoints()
+            shuffleVectors()
             break
         default:
           this.action()

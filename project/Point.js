@@ -30,4 +30,13 @@ class Point{
             && y > this.y - this.radius 
             && y < this.y + this.radius)
     }
+
+    setX(x){
+        this.x = x
+        this.pos = [this.x,this,y]
+    }
+    setX(y){
+        this.y = y
+        this.pos = [this.x,this,y]
+    }
 }
