@@ -19,6 +19,7 @@ function setup(){
 
   scpWidth = textWidth(escapeText)
   scpWidth2 = textWidth(escapeText2)
+  delWidth = textWidth(delText)
 
 }
 
@@ -74,25 +75,29 @@ function keyPressed(){
 }
 
 function draw() {
+  let currentEscapeText, currentDelTextY;
   background(backgroundColor);
 
+  currentPoint = new Point(mousePosition(), color(1,31,75))
+
+  if(isDrawing){
+    currentEscapeText = escapeText //texto da instrução do ESC, caso esteja desenhando
+    currentDelTextY = scpWidth*13/12 + 20 //coord Y da instrução do DEL, caso esteja desenhando
+    currentPoint.draw() //desenhar ponto atual (posição do mouse)
+  }
+  else{
+    currentEscapeText = escapeText2 //texto da instrução do ESC, caso não esteja desenhando
+    currentDelTextY = scpWidth2*13/12 + 20 //coord Y da instrução do DEL, caso não esteja desenhando
+  }
+  
   stroke(1,31,75)
   noFill()
   strokeWeight(0.4)
   textSize(13)
-
-  t = "[DEL] - Remover elemento"
-  w = textWidth(t)
-  text(t, cnvWidth - w - 5, 40)
-  currentPoint = new Point(mousePosition(), color(1,31,75))
-
-  if(isDrawing){
-    text(escapeText, cnvWidth - scpWidth*13/12 - 5 , 17)
-    currentPoint.draw()
-  }
-  else{
-    text(escapeText2, cnvWidth - scpWidth2*13/12 - 5 , 17)
-  }
+  
+  //desenhar os textos
+  text(currentEscapeText, 10 , 55) //texto com instruçao para para/começar a desenhar
+  text(delText, currentDelTextY, 55) //texto com instrução para deletar um elemento
   
   vectors.forEach(v =>{
     v.draw()
@@ -106,6 +111,7 @@ function draw() {
     b.draw()
   })
   
+  //se tiver desenhando e existir mais de um ponto no vetor, deverá desenhar o vetor atual, o que acompanha o mouse
   if(isDrawing && points.length > 0){
     currentVector = new Vector(
       points[points.length-1], 

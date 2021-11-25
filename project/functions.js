@@ -10,8 +10,9 @@ var clearText = '[C] Limpar tudo'
 var shuffleText = '[E] Embaralhar'
 var escapeText = '[ESC] - Parar de desenhar'
 var escapeText2 = '[ESC] - Voltar a desenhar'
+var delText = '[DEL] - Remover elemento'
 
-var addButton, clearButton, backgroundColor, scpWidth, shuffleButton;
+var addButton, clearButton, backgroundColor, scpWidth, shuffleButton, centralizeButton;
 var buttons = [];
 
 //dimensoes canva
@@ -82,21 +83,16 @@ function clearAll(){
 }
 
 function shuffleVectors(){    
-    vectors = shuffle(vectors)
+  vectors = shuffle(vectors)
 
-    updatePointSequence()
-    
-    centerPoints()
+  updatePointSequence()
+  
+  centralizePoints()
 
-    while(i < vectors.length){
-      checkCanvasBounds(i)
-      i++
-    }
-
-  regeneratePoints()
+  checkCanvasBounds()
 }
 
-function centerPoints(){
+function centralizePoints(){
     let arrX = [], arrY=[]
     
     points.forEach(p=>{
@@ -107,17 +103,12 @@ function centerPoints(){
     let difX = cnvWidth/2 - media(arrX)
     let difY = cnvHeight/2 - media(arrY)
     
-    
     points.forEach(p=>{
         p.setX(p.x + difX)
-    })
-    points.forEach(p=>{
         p.setY(p.y + difY)
     })
     
-    
     regenerateVectors()
-    
 }
 
 function media(arr){
@@ -137,34 +128,29 @@ function checkCanvasBounds(){
     let firstPoint = vectors[0].point1
     let p = vectors[i].point2
     
-    if (p.x > cnvWidth){
-      let dif = p.x - cnvWidth
-      firstPoint.setX(firstPoint.x - dif) //mover mais para a esquerda o primeiro ponto
-
+    //verifica se o ponto atual do loop fica forá do canvas de alguma forma
+    //modifica o primeiro ponto do primeiro vetor e depois atualiza todos os outros baseados nessa mudança
+    if (p.x > cnvWidth){ 
+      firstPoint.setX(firstPoint.x - (p.x - cnvWidth)) //mover mais para a esquerda o primeiro ponto
       changed = true
-      
     }
-
     else if(p.x < 0){
       firstPoint.setX(firstPoint.x - p.x) //mover mais para a direita o primeiro ponto
       changed = true
     }
 
     if(p.y > cnvHeight){
-      let dif = p.y - cnvHeight
-      
-      firstPoint.setY(firstPoint.y - dif) //mover mais para a cima o primeiro ponto
+      firstPoint.setY(firstPoint.y - (p.y - cnvHeight)) //mover mais para a cima o primeiro ponto
       changed = true
     }
-
     else if (p.y < 0){
       firstPoint.setY(firstPoint.y - p.y) //mover mais para a baixo o primeiro ponto
       changed = true 
     }
     
     if(changed){
-      updatePointSequence()
       vectors[0].setPoints(firstPoint)
+      updatePointSequence()
     }
     i++
   }
@@ -175,4 +161,5 @@ function updatePointSequence(){
   for (let i = 0; i < vectors.length-1; i++) {
     vectors[i+1].setPoints(vectors[i].point2)
   }
+  regeneratePoints()
 }
