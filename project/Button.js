@@ -34,17 +34,26 @@ class Button{
         case "add":
             sum()
             break
+            
         case "clear":
             clearAll()
             break
+
         case "help":
             print("help")
             break
+
         case "shuffle":
           if(vectors.length > 1){
             shuffleVectors()
           }
             break
+
+        case "centralize":
+          if(vectors.length > 1){
+            shuffleVectors()
+          }
+        
         default:
           this.action()
           break

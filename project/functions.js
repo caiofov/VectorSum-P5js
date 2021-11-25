@@ -11,6 +11,7 @@ var shuffleText = '[E] Embaralhar'
 var escapeText = '[ESC] - Parar de desenhar'
 var escapeText2 = '[ESC] - Voltar a desenhar'
 var delText = '[DEL] - Remover elemento'
+var centralizeText = '[A] - Centralizar'
 
 var addButton, clearButton, backgroundColor, scpWidth, shuffleButton, centralizeButton;
 var buttons = [];

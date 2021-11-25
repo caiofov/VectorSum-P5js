@@ -12,10 +12,9 @@ function setup(){
   addButton = new Button(10, 10, color(100,151,177), addText, "add");
   clearButton = new Button(110, 10, color(100,151,177), clearText, "clear");
   shuffleButton = new Button(240, 10, color(100,151,177), shuffleText, "shuffle");
+  centralizeButton = new Button(370, 10, color(100,151,177), centralizeText, "centralize" )
 
-  buttons.push(addButton)
-  buttons.push(clearButton)
-  buttons.push(shuffleButton)
+  buttons = [addButton, clearButton, shuffleButton, centralizeButton]
 
   scpWidth = textWidth(escapeText)
   scpWidth2 = textWidth(escapeText2)
@@ -68,7 +67,13 @@ function keyPressed(){
     case(46): //apagar um elemento
       deleteElement()
       break
-    
+
+    case(65): //centralizar pontos
+      if(points.length > 1){
+        centralizePoints()
+      }
+      break
+
     default:
       break
   }
