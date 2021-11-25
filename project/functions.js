@@ -84,6 +84,7 @@ function clearAll(){
 }
 
 function shuffleVectors(){
+    print(vectors)
     let c = color(1,31,75)
     vectors = shuffle(vectors)
     let i = 0
@@ -96,7 +97,7 @@ function shuffleVectors(){
             let dif = p.x - cnvWidth
             
             firstPoint.setX(firstPoint.x - dif) //mover mais para a esquerda o primeiro ponto
-            vectors[0].setPoints(new Point(firstPoint.x - dif, c))
+            vectors[0].setPoints(firstPoint)
             i = 0
             continue
         }
