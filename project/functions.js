@@ -4,14 +4,17 @@ var currentVector; //vetor atual (o que muda com o mouse)
 var currentPoint;
 var isDrawing = true; //diz se está "pausado" ou não
 
-//menu
+//botoes
 var addText = '[S] Somar '
 var clearText = '[C] Limpar tudo'
 var shuffleText = '[E] Embaralhar'
+var centralizeText = '[A] Centralizar'
+
+//textos na tela
 var escapeText = '[ESC] - Parar de desenhar'
 var escapeText2 = '[ESC] - Voltar a desenhar'
 var delText = '[DEL] - Remover elemento'
-var centralizeText = '[A] - Centralizar'
+
 
 var addButton, clearButton, backgroundColor, scpWidth, shuffleButton, centralizeButton;
 var buttons = [];
@@ -20,20 +23,19 @@ var buttons = [];
 var cnvWidth = 550
 var cnvHeight = 500
 
-function deleteElement(){
-    let pos = mousePosition()
-    
-    vectors.forEach( v =>{
+function deleteElement(){ //deleta elemento que o mouse está por cima
+
+    vectors.forEach( v =>{ //verifica se é um vetor
       if(v.isHover()){
         vectors.splice(vectors.indexOf(v),1)
         return;
       }
     })
   
-    points.forEach(p =>{
+    points.forEach(p =>{ //verifica se é um ponto
       if(p.isHover()){
         points.splice(points.indexOf(p),1)
-        regenerateVectors()
+        regenerateVectors() 
         return;
       }
     })
@@ -62,7 +64,7 @@ function sum(){ //soma os vetores
   
 }
 
-function regeneratePoints(){
+function regeneratePoints(){ //repopula o vetor de pontos baseado nos pontos dos vetores existentes
   points = []
   points.push(vectors[0].point1)
   
@@ -71,7 +73,7 @@ function regeneratePoints(){
   })
 }
 
-function regenerateVectors(){
+function regenerateVectors(){ //repopula os vetor de vetores baseado nos pontos existentes
   vectors = []
   for( i = 0 ; i < points.length-1 ; i++ ) { //desenha todos os vetores do array
     vectors.push(new Vector(points[i], points[i+1]))

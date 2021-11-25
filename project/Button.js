@@ -34,7 +34,7 @@ class Button{
         case "add":
             sum()
             break
-            
+
         case "clear":
             clearAll()
             break
@@ -50,8 +50,8 @@ class Button{
             break
 
         case "centralize":
-          if(vectors.length > 1){
-            shuffleVectors()
+          if(points.length > 1){
+            centralizePoints()
           }
         
         default:
