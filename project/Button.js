@@ -41,7 +41,9 @@ class Button{
             print("help")
             break
         case "shuffle":
+          if(vectors.length > 1){
             shuffleVectors()
+          }
             break
         default:
           this.action()

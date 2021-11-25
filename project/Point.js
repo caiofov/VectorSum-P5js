@@ -33,10 +33,10 @@ class Point{
 
     setX(x){
         this.x = x
-        this.pos = [this.x,this,y]
+        this.pos = [this.x,this.y]
     }
-    setX(y){
+    setY(y){
         this.y = y
-        this.pos = [this.x,this,y]
+        this.pos = [this.x,this.y]
     }
 }

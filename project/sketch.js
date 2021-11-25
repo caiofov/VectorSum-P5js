@@ -59,7 +59,9 @@ function keyPressed(){
       break
     
     case(69): //embaralharar
+    if(vectors.length > 1){
       shuffleVectors()
+    }
       break
     
     case(46): //apagar um elemento

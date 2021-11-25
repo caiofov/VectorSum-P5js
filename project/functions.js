@@ -84,67 +84,63 @@ function clearAll(){
 }
 
 function shuffleVectors(){
+    let c = color(1,31,75)
     vectors = shuffle(vectors)
-    let ready = false
     let i = 0
 
-    while(!ready){
+    while(i < vectors.length){
+        let firstPoint = vectors[0].point1
         let p = vectors[i].point2
         
         if (p.x > cnvWidth){
             let dif = p.x - cnvWidth
-            let newPoint = vectors[0].point1
-            newPoint.setX(newPoint.x - dif) //mover mis para a esquerda o primeiro ponto
-
-            vectors[0].setPoints(newPoint)
+            
+            firstPoint.setX(firstPoint.x - dif) //mover mais para a esquerda o primeiro ponto
+            vectors[0].setPoints(new Point(firstPoint.x - dif, c))
             i = 0
-            print("maior x")
             continue
         }
         else if(p.x < 0){
-            let dif = 0 - p.x
-            let newPoint = vectors[0].point1
-            newPoint.setX(newPoint.x + dif) //mover mais para a direita o primeiro ponto
-
-            vectors[0].setPoints(newPoint)
+            firstPoint.setX(firstPoint.x - p.x) //mover mais para a direita o primeiro ponto
+            vectors[0].setPoints(firstPoint)
+           
             i = 0
-            print("menor x")
-
             continue
         }
 
         if(p.y > cnvHeight){
             let dif = p.y - cnvHeight
-            let newPoint = vectors[0].point1
-            newPoint.setY(newPoint.x - dif) //mover mais para a cima o primeiro ponto
-
-            vectors[0].setPoints(newPoint)
+            
+            firstPoint.setY(firstPoint.y - dif) //mover mais para a cima o primeiro ponto
+            vectors[0].setPoints(firstPoint)
+            
             i = 0
-            print("maior y")
             continue
 
         }
         else if (p.y < 0){
-            let dif = 0 - p.y
-            let newPoint = vectors[0].point1
-            newPoint.setY(newPoint.x + dif) //mover mais para a baixo o primeiro ponto
-
-            vectors[0].setPoints(newPoint)
+            firstPoint.setY(firstPoint.y - p.y) //mover mais para a baixo o primeiro ponto
+            vectors[0].setPoints(firstPoint)
+            
             i = 0
-            print("menor y")
-
-
             continue
-
         }
 
-        vectors[i+1].setPoints(p)
-
+        if(i<vectors.length - 1){
+            vectors[i+1].setPoints(vectors[i].point2)
+        }
+        
         i++
-        if(i == vectors.length - 1){
-            ready = true
-        }
     }
 
   regeneratePoints()
+}
+
+function teste(){
+    vectors = [vectors[2], vectors[0], vectors[1]]
+
+    vectors[1].setPoints(vectors[0].point2)
+    vectors[2].setPoints(vectors[1].point2)
+    
+    regeneratePoints()
 }

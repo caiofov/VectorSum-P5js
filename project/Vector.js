@@ -16,8 +16,6 @@ class Vector{
 
     //para a função da reta
     this.angular = (this.dy) / (this.dx) //coeficiente angular
-    this.linear = this.y1 - this.angular*this.x1 //coeficiente linear
-
     this.weight = 2
 
     //valor escalar do vetor
@@ -53,8 +51,8 @@ class Vector{
     let maxY = ( this.y1 > this.y2 ? this.y1 : this.y2 )
     let minY = ( this.y1 > this.y2 ? this.y2 : this.y1 )
 
-    return  (result < pos[1] + this.weight+2 
-      && result > pos[1] - this.weight - 2 
+    return  (result < pos[1] + this.weight+3 
+      && result > pos[1] - this.weight - 3
       && pos[0] < maxX
       && pos[1] < maxY
       && pos[0] > minX
@@ -62,13 +60,14 @@ class Vector{
   }
 
   lineFunction(x){
-    return this.angular*x + this.linear
+    return this.angular*x + this.linear()
   }
 
   setPoints(p1){
     this.point1 = p1;
     this.x1 = this.point1.x
-    this.t1 = this.point1.y
+    this.y1 = this.point1.y
+        
     this.setPoint2()
   }
 
@@ -76,6 +75,10 @@ class Vector{
     this.x2 = this.x1 + this.dx
     this.y2 = this.y1 + this.dy
     this.point2 = new Point([this.x2,this.y2], color(1,31,75))
+  }
+
+  linear(){
+    return this.y1 - this.angular*this.x1
   }
   
 }
