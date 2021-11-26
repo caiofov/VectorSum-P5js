@@ -31,10 +31,23 @@ class Vector{
     
     
     if(this.isHover()){
-      textSize(15)
+      let textModuleFontSize = 15
+      let textModule = "Módulo: "+ nf(this.value, undefined, 2)
+      let widthTextModule = textWidth(textModule)*15/12
+      let textModuleY = ((this.y2 - this.y1)/2)+this.y1
+      let textModuleX = ((this.x2 - this.x1)/2)+this.x1
+
+      if(textModuleY + textModuleFontSize > cnvHeight){
+        textModuleY = (textModuleY + textModuleFontSize) - cnvHeight
+      }
+      if(textModuleX + widthTextModule > cnvWidth){
+        textModuleX -= (textModuleX + widthTextModule - cnvWidth)
+      }
+
+      textSize(textModuleFontSize)
       noFill()
       strokeWeight(1)
-      text("Módulo: "+ nf(this.value, undefined, 2), ((this.x2 - this.x1)/2)+this.x1, ((this.y2 - this.y1)/2)+this.y1)
+      text(textModule, textModuleX , textModuleY)
       stroke(255,165,0)
   
     }
