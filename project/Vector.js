@@ -37,11 +37,11 @@ class Vector{
       let textModuleY = ((this.y2 - this.y1)/2)+this.y1
       let textModuleX = ((this.x2 - this.x1)/2)+this.x1
 
-      if(textModuleY + textModuleFontSize > cnvHeight){
-        textModuleY = (textModuleY + textModuleFontSize) - cnvHeight
-      }
       if(textModuleX + widthTextModule > cnvWidth){
         textModuleX -= (textModuleX + widthTextModule - cnvWidth)
+      }
+      if(textModuleY - textModuleFontSize < 0){
+        textModuleY += textModuleFontSize
       }
 
       textSize(textModuleFontSize)
