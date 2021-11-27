@@ -1,17 +1,21 @@
-class Point{
+class Point{ //Classe para os pontos que formam os vetores
     constructor(pos, color){
-        this.pos = pos
+        //posição
+        this.pos = pos //array [x,y]
         this.x = pos[0]
         this.y = pos[1]
-        this.radius = 10
-        this.color = color
+
+        this.radius = 10 //raio do ponto
+        this.color = color //cor
     }
 
-    draw(){
-        let buttonText = "x: " + nf(this.x,undefined, 2) + " y: " + nf(this.y, undefined, 2)
-        let buttonTextFontSize = 15
-        let widthButtonText = textWidth(buttonText) * buttonTextFontSize/12
-        let buttonTextX = this.x
+    draw(){ //desenha o ponto - deve ser chamada na função de desenho do P5.js
+        //todo ponto possui um label que indica sua coordenada
+        let buttonText = "x: " + nf(this.x,undefined, 2) + " y: " + nf(this.y, undefined, 2) //texto do label
+        let buttonTextFontSize = 15 //tamanho da fonte
+        let widthButtonText = textWidth(buttonText) * buttonTextFontSize/12 //largura do texto
+        //posição do texto
+        let buttonTextX = this.x 
         let buttonTextY = this.y - this.radius
         
         fill(this.color)
@@ -19,12 +23,13 @@ class Point{
         strokeWeight(0.5)
         textSize(buttonTextFontSize)
         
-        if(this.isHover()){
+        if(this.isHover()){ //se o mouse estiver por cima, irá mudar de cor
             fill(255,165,0)
         }
         
-        circle(this.x,this.y,this.radius)
+        circle(this.x,this.y,this.radius) //desenho do ponto
 
+        //agora, verificaremos se o label passará das extremidades do nosso canvas. Se isso acontecer, sua posição será recalculada
         if(buttonTextX + widthButtonText > cnvWidth){
             buttonTextX -= (buttonTextX + widthButtonText) - cnvWidth
         }
@@ -32,10 +37,10 @@ class Point{
             buttonTextY += buttonTextFontSize
         }
 
-        text(buttonText, buttonTextX, buttonTextY)
+        text(buttonText, buttonTextX, buttonTextY) //desenha o label
     }
 
-    isHover(){
+    isHover(){ //verifica se o mouse está por cima
         let x = mousePosition()[0]
         let y = mousePosition()[1]
         
@@ -45,11 +50,11 @@ class Point{
             && y < this.y + this.radius)
     }
 
-    setX(x){
+    setX(x){ //atualiza a coordenada X
         this.x = x
         this.pos = [this.x,this.y]
     }
-    setY(y){
+    setY(y){ //atualiza a coordenada Y
         this.y = y
         this.pos = [this.x,this.y]
     }

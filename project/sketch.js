@@ -9,13 +9,16 @@ function setup(){
   
   backgroundColor = color(179,205,224)
   
+  //criando os botões
   addButton = new Button(10, 10, color(100,151,177), addText, "add");
   clearButton = new Button(110, 10, color(100,151,177), clearText, "clear");
   shuffleButton = new Button(240, 10, color(100,151,177), shuffleText, "shuffle");
   centralizeButton = new Button(370, 10, color(100,151,177), centralizeText, "centralize" )
 
+  //definndo o array de botões
   buttons = [addButton, clearButton, shuffleButton, centralizeButton]
 
+  //calculando o tamanho dos textos que aparecerão na tela
   scpWidth = textWidth(escapeText)
   scpWidth2 = textWidth(escapeText2)
   delWidth = textWidth(delText)
@@ -32,8 +35,8 @@ function mousePressed(){
     points.push(currentPoint)
   }
   
-  else if(mouseButton === "left" && !(isDrawing)){
-    buttons.forEach( b=> {
+  else if(mouseButton === "left" && !(isDrawing)){ //se não tiver desenhando e acionar o mouse
+    buttons.forEach( b=> { //verifica se clicou em algum botão e, então realizar sua ação
       if(b.isHover()){
         b.onClick()
       }
@@ -104,15 +107,15 @@ function draw() {
   text(currentEscapeText, 10 , 55) //texto com instruçao para para/começar a desenhar
   text(delText, currentDelTextY, 55) //texto com instrução para deletar um elemento
   
-  vectors.forEach(v =>{
+  vectors.forEach(v =>{ //desenhando os vetores
     v.draw()
   })
 
-  points.forEach(p =>{
+  points.forEach(p =>{ //desenhando os pontos
     p.draw()
   })
 
-  buttons.forEach(b=>{
+  buttons.forEach(b=>{ //desenhando os botões
     b.draw()
   })
   

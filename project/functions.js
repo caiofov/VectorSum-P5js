@@ -4,7 +4,7 @@ var currentVector; //vetor atual (o que muda com o mouse)
 var currentPoint;
 var isDrawing = true; //diz se está "pausado" ou não
 
-//botoes
+//textos dos botoes
 var addText = '[S] Somar '
 var clearText = '[C] Limpar tudo'
 var shuffleText = '[E] Embaralhar'
@@ -15,7 +15,6 @@ var escapeText = '[ESC] - Parar de desenhar'
 var escapeText2 = '[ESC] - Voltar a desenhar'
 var delText = '[DEL] - Remover elemento'
 
-
 var addButton, clearButton, backgroundColor, scpWidth, shuffleButton, centralizeButton;
 var buttons = [];
 
@@ -23,31 +22,35 @@ var buttons = [];
 var cnvWidth = 550
 var cnvHeight = 500
 
-function deleteElement(){ //deleta elemento que o mouse está por cima
+function deleteElement(){ //deleta elemento que o mouse está por cima -> só é chamada quando a tecla DEL é pressionada
 
-    vectors.forEach( v =>{ //verifica se é um vetor
+    vectors.forEach( v =>{ //verifica se está por cima de um vetor
       if(v.isHover()){
-        vectors.splice(vectors.indexOf(v),1)
+        vectors.splice(vectors.indexOf(v),1) //tira o vetor da lista de vetores. Então, automaticamente, ele não será mais desenhado
         return;
       }
     })
   
-    points.forEach(p =>{ //verifica se é um ponto
+    points.forEach(p =>{ //verifica se está por cima de um ponto
       if(p.isHover()){
-        points.splice(points.indexOf(p),1)
-        regenerateVectors() 
+        points.splice(points.indexOf(p),1) //faz o mesmo, mas para a lista de pontos
+        regenerateVectors()  //recalcula os vetores quando for eliminado o ponto
         return;
       }
     })
 }
   
-function mousePosition(){
+function mousePosition(){ //quando chamada, retorna a posição do mouse
     let x = mouseX
     let y = mouseY
 
+    //verificando os limites do canvas -> se passar do limite, será considerado como se fosse o próprio limite
+
+    //limite para o eixo X (largura)
     if(x > cnvWidth){x = cnvWidth}
     else if(x<0){x = 0}
 
+    //limite para o eixo Y (altura)
     if(y > cnvHeight){ y = cnvHeight }
     else if(y < 0){ y = 0}
 
@@ -56,65 +59,68 @@ function mousePosition(){
 
 function sum(){ //soma os vetores
   if(vectors.length > 1){
+    //cria um novo vetor soma, que possui o ponto inicial no primeiro ponto do primeiro vetor e o último ponto no último ponto do último vetor
     let sumVector = new Vector(points[0], points[points.length-1], color(255,0,0))
 
-    vectors.push(sumVector)
-    isDrawing = false;
+    vectors.push(sumVector) //adiciona à lista de vetores, para ser desenhado
+    isDrawing = false //dá "pause" no desenho, para evitar possíveis erros
   }
   
 }
 
 function regeneratePoints(){ //repopula o vetor de pontos baseado nos pontos dos vetores existentes
   points = []
-  points.push(vectors[0].point1)
+  points.push(vectors[0].point1) //adiciona o primeiro ponto do primeiro vetor
   
-  vectors.forEach(v =>{
-    points.push(v.point2)
+  vectors.forEach(v =>{ //para cada vetor da lista
+    points.push(v.point2) //adicionará o último ponto desse vetor
   })
 }
 
 function regenerateVectors(){ //repopula os vetor de vetores baseado nos pontos existentes
   vectors = []
-  for( i = 0 ; i < points.length-1 ; i++ ) { //desenha todos os vetores do array
-    vectors.push(new Vector(points[i], points[i+1]))
+  for( i = 0 ; i < points.length-1 ; i++ ) { 
+    vectors.push(new Vector(points[i], points[i+1])) //cada vetor será uma linha entre o ponto atual e o próximo ponto
   }
 }
 
-function clearAll(){
+function clearAll(){ //remove todos os pontos e todos os vetores
   vectors = []
   points = []
 }
 
 function shuffleVectors(){    
-  vectors = shuffle(vectors)
+  vectors = shuffle(vectors) //mistura a lista de vetores
 
-  updatePointSequence()
+  updatePointSequence() //atualiza a sequência de pontos de acordo com os vetores -> essa função também atualiza os pontos de cada vetor
   
-  centralizePoints()
+  centralizePoints() //centraliza os pontos e, consequentemnete, os vetores
 
-  checkCanvasBounds()
+  checkCanvasBounds() //verifica se todos os pontos estão dentro do canva, se não, irá resolver
 }
 
-function centralizePoints(){
+function centralizePoints(){ //centraliza os pontos para o meio do canvas
     let arrX = [], arrY=[]
     
-    points.forEach(p=>{
+    points.forEach(p=>{ //gera dois arrays: um para todos os valores de X e outro para todos os valores de Y
         arrX.push(p.x)
         arrY.push(p.y)
     })
 
-    let difX = cnvWidth/2 - media(arrX)
-    let difY = cnvHeight/2 - media(arrY)
+    //para cada eixo, tiratremos a media dos pontos e veremos o quanto esse ponto médio será deslocado para ficar no centro do canvas
+    let difX = cnvWidth/2 - media(arrX) //(Meio do eixo X) - (Coordenada X do ponto médio)
+    let difY = cnvHeight/2 - media(arrY)//(Meio do eixo Y) - (Coordenada Y do ponto médio)
     
+    //cada ponto será deslocado os valores medidos acima
     points.forEach(p=>{
         p.setX(p.x + difX)
         p.setY(p.y + difY)
     })
     
-    regenerateVectors()
+    regenerateVectors() //recalcula os vetores com base nos pontos
 }
 
-function media(arr){
+function media(arr){ //função de apoio -> calcula o valor médio de um array
     let sum = 0
     arr.forEach(a=>{
         sum+=a
@@ -123,7 +129,7 @@ function media(arr){
     return sum/arr.length
 }
 
-function checkCanvasBounds(){
+function checkCanvasBounds(){ //verifica se os todos os pontos estão dentro dos pontos
   let i = 0
   
   while(i < vectors.length - 1){
@@ -151,18 +157,18 @@ function checkCanvasBounds(){
       changed = true 
     }
     
-    if(changed){
-      vectors[0].setPoints(firstPoint)
-      updatePointSequence()
+    if(changed){ //se tiver alterado algo
+      vectors[0].setPoints(firstPoint) //atualiza os pontos do primeiro vetor
+      updatePointSequence() //atualiza a sequencia de pontos (e vetores)
     }
     i++
   }
 }
   
 
-function updatePointSequence(){
+function updatePointSequence(){ //atualiza a sequencia de pontos e modifica os vetores com base nessa sequencia
   for (let i = 0; i < vectors.length-1; i++) {
-    vectors[i+1].setPoints(vectors[i].point2)
+    vectors[i+1].setPoints(vectors[i].point2) //para cada vetor, seu primeiro ponto será o último do vetor anterio
   }
-  regeneratePoints()
+  regeneratePoints() //atualiza o vetor de pontos
 }
