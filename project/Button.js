@@ -37,12 +37,12 @@ class Button{ //Classe para os botões de ação.
     onClick(){ //executa a ação do botão -> deve ser chamada ao botão ser acionado
       switch(this.action){ //para cada tipo de ação do botão, será chamada uma função
         case "add": //soma - gera o vetor soma
-            sum()
-            break
+          sum()
+          break
 
         case "clear": //deleta todos os pontos e vetores
-            clearAll()
-            break
+          clearAll()
+          break
 
         case "shuffle": //embaralha os vetores
           if(vectors.length > 1){ //checa se há mais de um vetor para embaralhar

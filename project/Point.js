@@ -5,7 +5,7 @@ class Point{ //Classe para os pontos que formam os vetores
         this.x = pos[0]
         this.y = pos[1]
 
-        this.radius = 10 //raio do ponto
+        this.radius = 8 //raio do ponto
         this.color = color //cor
     }
 
@@ -13,7 +13,7 @@ class Point{ //Classe para os pontos que formam os vetores
         //todo ponto possui um label que indica sua coordenada
         let buttonText = "x: " + nf(this.x,undefined, 2) + " y: " + nf(this.y, undefined, 2) //texto do label
         let buttonTextFontSize = 15 //tamanho da fonte
-        let widthButtonText = textWidth(buttonText) * buttonTextFontSize/12 //largura do texto
+        let widthButtonText = textWidth(buttonText) * buttonTextFontSize/14 //largura do texto
         //posição do texto
         let buttonTextX = this.x 
         let buttonTextY = this.y - this.radius

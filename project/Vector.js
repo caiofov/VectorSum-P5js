@@ -4,7 +4,7 @@ class Vector{ //Classe para os vetores
     this.point1 = point1 //primeiro ponto (tipo Point)
     this.point2 = point2 //segundo ponto (tipo Point)
     
-    //coordenadas dos pontos - para facilitar o acesso
+    //coordenadas dos pontos - para facilitar o acesso a esses valores
     this.x1 = point1.x
     this.y1 = point1.y
     this.x2 = point2.x
@@ -30,6 +30,7 @@ class Vector{ //Classe para os vetores
   
   draw(){
     stroke(this.paint)
+    fill(this.paint)
     
     
     if(this.isHover()){ //se o mouse estiver por cima
@@ -54,12 +55,16 @@ class Vector{ //Classe para os vetores
       noFill()
       strokeWeight(1)
       text(textModule, textModuleX , textModuleY)
+
+      //mudar os valores das cores qeu serão desenhados os vetores, já que o mouse está por cima
       stroke(255,165,0)
+      fill(255,165,0)
   
     }
     //desenhar a linha do vetor
     strokeWeight(this.weight)
-    line(this.x1, this.y1, this.x2, this.y2)    
+    arrow(this.point1, this.point2) //função externa à classe - não implementada por mim
+    
   }
   
   isHover(){ //verifica se o mouse está por cima da linha do vetor
@@ -103,5 +108,25 @@ class Vector{ //Classe para os vetores
   linear(){ //calcula o coeficiente linear
     return this.y1 - this.angular*this.x1
   }
+
   
+  
+}
+
+// https://stackoverflow.com/questions/44874243/drawing-arrows-in-p5js
+function arrow( p1, p2 ){ //desenha uma linha com uma seta na ponta
+  let x1 = p1.x
+  let y1 = p1.y
+  let x2 = p2.x
+  let y2 = p2.y
+
+  var angle = atan2(y2-y1,x2-x1);
+  var  off  = 12
+  var hoff  = off*0.6
+  line(x1,y1, x2,y2)
+  push()  
+    translate(x2,y2);
+    rotate(angle);
+    triangle(0,0, -off, hoff, -off, -hoff);
+  pop()
 }
