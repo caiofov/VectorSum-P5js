@@ -27,6 +27,7 @@ function deleteElement(){ //deleta elemento que o mouse está por cima -> só é
     vectors.forEach( v =>{ //verifica se está por cima de um vetor
       if(v.isHover()){
         vectors.splice(vectors.indexOf(v),1) //tira o vetor da lista de vetores. Então, automaticamente, ele não será mais desenhado
+        updatePointSequence() //recalcula os pontos quanto for eliminado um vetor
         return;
       }
     })
